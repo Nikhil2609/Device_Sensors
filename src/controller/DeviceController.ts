@@ -8,92 +8,22 @@ export class DeviceController {
         this._deviceService =  _deviceService;                     
     }   
     
-    getSensors = async (req:Request,res:Response)=>{ 
-        console.log("Get Sensors Body , ",req.body);  
-        let sensors = await this._deviceService.getSensors(req);      
-
-        let rows = sensors.rows; // Data print on table
-        let totalRow = sensors.count; // Return from table...
-        let pages = Math.ceil(totalRow/skip); // total pagination number ... for 40 rows 1,2,3,4 on each page 10 rows..        
-        
-        let searchValue = req.body.searchValue;      // Value for Coloumn
-        let searchColoumn = req.body.SearchColoumn;  // Coloumn              
-        let orderBy = req.body.OrderBy; //fetch Order Column...        
-        let order:any = req.body.order || 'asc';
-
-        console.log("Service ",searchValue,searchColoumn,orderBy,order);
-        // let searchValue;
-        // let OrderBy;
-        // let order;
-        let current:number = parseInt(req.params.page) || 1;
-
-        console.log("Controller rows length ",rows.length);
-        console.log("Controller Total row before pagination",totalRow);
-        console.log("Total page",pages , " per page ", skip);
-        console.log("Current page number",current);
-
+    getSensors = async (req:Request,res:Response)=>{         
+        let sensors = await this._deviceService.getSensors(req);            
         return res.render("sensorList",{
-                                        rows, // data
-                                        totalRow, // total Rows before Pagination            
-                                        pages,
-                                        current,
-                                        searchValue,
-                                        searchColoumn,
-                                        orderBy,
-                                        order,
+                                        rows:sensors.rows,                      // Data print on table
+                                        totalRow:sensors.count,                 // total Rows before Pagination            
+                                        pages:Math.ceil(sensors.count/skip),    // total pagination number ... for 40 rows 1,2,3,4 on each page 10 rows..        
+                                        current:parseInt(req.params.page) || 1,
+                                        searchValue:req.body.searchValue,       // Value for Coloumn
+                                        searchColoumn:req.body.SearchColoumn, 
+                                        orderBy:req.body.OrderBy,               //fetch Order Column...
+                                        order:req.body.order || 'asc',
                                         message:"SensorsList Data"
                                        }
                         ); 
-
-//         <div style="margin-left: 15px;"> 
-//     <% if (pages > 0) { %>
-//       <ul class="pagination">
-//           <% if (current == 1) { %>
-//             <li class="disabled page-item">
-//               <a class="page-link" href="#" aria-label="Previous">
-//                 <span aria-hidden="true">&laquo;</span>
-//                 <span class="sr-only">Previous</span>
-//               </a>
-//             </li>              
-//           <% } else { %>
-//             <li class="page-item">
-//               <a class="page-link" href="/getSensors/1?SearchColoumn=<%=SearchColoumn%>&searchValue=<%=searchValue%>&OrderBy=<%=OrderBy%>&order=<%=order%>" aria-label="Previous">
-//                 <span aria-hidden="true">&laquo;</span>
-//                 <span class="sr-only">Previous</span>
-//               </a>
-//             </li>               
-//           <% } %>
-          
-//           <% for (var i = 1; i <= pages; i++) { %>
-//               <% if (i == current) { %>
-//                 <li class="active page-item"><a class="page-link" href="#"><%= i %></a></li>                  
-//               <% } else { %>
-//                   <li class="page-item"><a class="page-link" href="/getSensors/<%= i %>?SearchColoumn=<%=SearchColoumn%>&searchValue=<%=searchValue%>&OrderBy=<%=OrderBy%>&order=<%=order%>"><%= i %></a></li>                  
-//               <% } %>              
-//           <% } %>
-//           <% if (current == pages) { %>
-//             <li class=" disabled page-item">
-//               <a class="page-link" href="#" aria-label="Next">
-//                 <span aria-hidden="true">&raquo;</span>
-//                 <span class="sr-only">Next</span>
-//               </a>
-//             </li>              
-//           <% } else { %>
-//             <li class="page-item">
-//               <a class="page-link" href="/search/<%= pages %>?SearchColoumn=<%=SearchColoumn%>&searchValue=<%=searchValue%>&OrderBy=<%=OrderBy%>&order=<%=order%>" aria-label="Next">
-//                 <span aria-hidden="true">&raquo;</span>
-//                 <span class="sr-only">Next</span>
-//               </a>
-//             </li>              
-//           <% } %>          
-//       </ul>
-//       <% } %> 
-// </div>        
-    
-    }
-    
-    addUpdateDeviceType = async (req:Request,res:Response) => {  
-        console.log("Device Type Body",req.body); 
+    }    
+    addUpdateDeviceType = async (req:Request,res:Response) => {          
         if(req.body.deviceTypeId){
             let deviceType = await this._deviceService.updateDeviceType(req.body);
             console.log("Updated DeviceType Data",deviceType);

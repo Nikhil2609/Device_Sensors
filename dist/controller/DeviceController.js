@@ -17,76 +17,25 @@ class DeviceController {
         this.getSensors = (req, res) => __awaiter(this, void 0, void 0, function* () {
             console.log("Get Sensors Body , ", req.body);
             let sensors = yield this._deviceService.getSensors(req);
-            let rows = sensors.rows; // Data print on table
-            let totalRow = sensors.count; // Return from table...
-            let pages = Math.ceil(totalRow / constant_1.skip); // total pagination number ... for 40 rows 1,2,3,4 on each page 10 rows..        
-            let searchValue = req.body.searchValue; // Value for Coloumn
-            let searchColoumn = req.body.SearchColoumn; // Coloumn              
-            let orderBy = req.body.OrderBy; //fetch Order Column...        
-            let order = req.body.order || 'asc';
-            console.log("Service ", searchValue, searchColoumn, orderBy, order);
-            // let searchValue;
-            // let OrderBy;
-            // let order;
-            let current = parseInt(req.params.page) || 1;
-            console.log("Controller rows length ", rows.length);
-            console.log("Controller Total row before pagination", totalRow);
-            console.log("Total page", pages, " per page ", constant_1.skip);
-            console.log("Current page number", current);
+            // let rows = sensors.rows; // Data print on table
+            // let totalRow = sensors.count; // Return from table...
+            // let pages = Math.ceil(totalRow/skip); // total pagination number ... for 40 rows 1,2,3,4 on each page 10 rows..        
+            // let current:number = parseInt(req.params.page) || 1;
+            // let searchValue = req.body.searchValue;      // Value for Coloumn
+            // let searchColoumn = req.body.SearchColoumn;  // Coloumn              
+            // let orderBy = req.body.OrderBy; //fetch Order Column...        
+            // let order:any = req.body.order || 'asc';            
             return res.render("sensorList", {
-                rows,
-                totalRow,
-                pages,
-                current,
-                searchValue,
-                searchColoumn,
-                orderBy,
-                order,
+                rows: sensors.rows,
+                totalRow: sensors.count,
+                pages: Math.ceil(sensors.count / constant_1.skip),
+                current: parseInt(req.params.page) || 1,
+                searchValue: req.body.searchValue,
+                searchColoumn: req.body.SearchColoumn,
+                orderBy: req.body.OrderBy,
+                order: req.body.order || 'asc',
                 message: "SensorsList Data"
             });
-            //         <div style="margin-left: 15px;"> 
-            //     <% if (pages > 0) { %>
-            //       <ul class="pagination">
-            //           <% if (current == 1) { %>
-            //             <li class="disabled page-item">
-            //               <a class="page-link" href="#" aria-label="Previous">
-            //                 <span aria-hidden="true">&laquo;</span>
-            //                 <span class="sr-only">Previous</span>
-            //               </a>
-            //             </li>              
-            //           <% } else { %>
-            //             <li class="page-item">
-            //               <a class="page-link" href="/getSensors/1?SearchColoumn=<%=SearchColoumn%>&searchValue=<%=searchValue%>&OrderBy=<%=OrderBy%>&order=<%=order%>" aria-label="Previous">
-            //                 <span aria-hidden="true">&laquo;</span>
-            //                 <span class="sr-only">Previous</span>
-            //               </a>
-            //             </li>               
-            //           <% } %>
-            //           <% for (var i = 1; i <= pages; i++) { %>
-            //               <% if (i == current) { %>
-            //                 <li class="active page-item"><a class="page-link" href="#"><%= i %></a></li>                  
-            //               <% } else { %>
-            //                   <li class="page-item"><a class="page-link" href="/getSensors/<%= i %>?SearchColoumn=<%=SearchColoumn%>&searchValue=<%=searchValue%>&OrderBy=<%=OrderBy%>&order=<%=order%>"><%= i %></a></li>                  
-            //               <% } %>              
-            //           <% } %>
-            //           <% if (current == pages) { %>
-            //             <li class=" disabled page-item">
-            //               <a class="page-link" href="#" aria-label="Next">
-            //                 <span aria-hidden="true">&raquo;</span>
-            //                 <span class="sr-only">Next</span>
-            //               </a>
-            //             </li>              
-            //           <% } else { %>
-            //             <li class="page-item">
-            //               <a class="page-link" href="/search/<%= pages %>?SearchColoumn=<%=SearchColoumn%>&searchValue=<%=searchValue%>&OrderBy=<%=OrderBy%>&order=<%=order%>" aria-label="Next">
-            //                 <span aria-hidden="true">&raquo;</span>
-            //                 <span class="sr-only">Next</span>
-            //               </a>
-            //             </li>              
-            //           <% } %>          
-            //       </ul>
-            //       <% } %> 
-            // </div>        
         });
         this.addUpdateDeviceType = (req, res) => __awaiter(this, void 0, void 0, function* () {
             console.log("Device Type Body", req.body);
