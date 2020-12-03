@@ -10,55 +10,7 @@ export class DeviceRepositery{
     constructor(){
         console.log("Device Repositery constructor called",this);
     }
-
-//     async getSensors(req:any,
-//         limit:number,
-//         offset: number,
-//         OrderColoumn:Order,
-//         whereColoumn:WhereOptions<any>): Promise<{
-//                                                    rows: Device[];
-//                                                    count: number;
-//                                                }>{
- 
-// return new Promise((resolve,reject)=>{
-// Device.findAndCountAll(
-//        {                                                                                                    
-//        attributes:["deviceID","name"],                                                
-//        order:OrderColoumn,
-//        where : whereColoumn,
-//        limit:limit,
-//        offset:offset,
-//        subQuery:false ,                                                                                                
-//        include:
-//                [                                                        
-//                {
-//                model:DeviceType,required:true ,attributes:["deviceTypeID","name"],                                                                                                   
-//                include:[
-//                    {
-//                        model:DeviceSensor,required:true,attributes:["deviceSensorId"],
-//                        include:[{
-//                            model:Sensor ,required:true,attributes:["sensorID","name"],
-//                            include:[
-//                                {model:SensorType,required:true,attributes:["sensorTypeID","name"]}]
-//                        }]
-//                    }
-//                ]
-//                }
-//            ],                                                                                                                                                                                                                                                               
-//        raw:true,
-//        nest:true                                                                                        
-//        })                    
-//      .then( =>{
-//       rows = value.rows;                                                
-//       TotalRow = value.count;
-//       console.log("Rows ",TotalRow);
-//       pages = Math.ceil(TotalRow/limit);
-//      }))
-//      .catch(err=>console.log("Error On getDeviceSensors ",err));   
-
-//    });
-// }   
-
+    
     async getSensors(req:any,
         limit:number,
         offset: number,
