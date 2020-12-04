@@ -19,51 +19,6 @@ class DeviceRepositery {
     constructor() {
         console.log("Device Repositery constructor called", this);
     }
-    //     async getSensors(req:any,
-    //         limit:number,
-    //         offset: number,
-    //         OrderColoumn:Order,
-    //         whereColoumn:WhereOptions<any>): Promise<{
-    //                                                    rows: Device[];
-    //                                                    count: number;
-    //                                                }>{
-    // return new Promise((resolve,reject)=>{
-    // Device.findAndCountAll(
-    //        {                                                                                                    
-    //        attributes:["deviceID","name"],                                                
-    //        order:OrderColoumn,
-    //        where : whereColoumn,
-    //        limit:limit,
-    //        offset:offset,
-    //        subQuery:false ,                                                                                                
-    //        include:
-    //                [                                                        
-    //                {
-    //                model:DeviceType,required:true ,attributes:["deviceTypeID","name"],                                                                                                   
-    //                include:[
-    //                    {
-    //                        model:DeviceSensor,required:true,attributes:["deviceSensorId"],
-    //                        include:[{
-    //                            model:Sensor ,required:true,attributes:["sensorID","name"],
-    //                            include:[
-    //                                {model:SensorType,required:true,attributes:["sensorTypeID","name"]}]
-    //                        }]
-    //                    }
-    //                ]
-    //                }
-    //            ],                                                                                                                                                                                                                                                               
-    //        raw:true,
-    //        nest:true                                                                                        
-    //        })                    
-    //      .then( =>{
-    //       rows = value.rows;                                                
-    //       TotalRow = value.count;
-    //       console.log("Rows ",TotalRow);
-    //       pages = Math.ceil(TotalRow/limit);
-    //      }))
-    //      .catch(err=>console.log("Error On getDeviceSensors ",err));   
-    //    });
-    // }   
     getSensors(req, limit, offset, OrderColoumn, whereColoumn) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
@@ -130,7 +85,7 @@ class DeviceRepositery {
     addDeviceSensor(body) {
         return Device_Sensors_1.DeviceSensor.create({
             deviceTypeID: body.DeviceType,
-            sensorTypeID: body.SensorType
+            sensorID: body.Sensor
         });
     }
     addDevice(body) {
@@ -150,6 +105,12 @@ class DeviceRepositery {
                 resolve(response);
             })
                 .catch((err) => console.log("Errr", err));
+        });
+    }
+    addSensor(body) {
+        return Sensor_1.Sensor.create({
+            name: body.Sensor,
+            sensorTypeID: body.sensorType
         });
     }
 }

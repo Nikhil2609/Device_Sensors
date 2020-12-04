@@ -17,6 +17,7 @@ const DeviceController_1 = require("./controller/DeviceController");
 const db_1 = require("./db");
 const Device_1 = require("./model/Device");
 const Device_type_1 = require("./model/Device-type");
+const Sensor_1 = require("./model/Sensor");
 const Sensor_type_1 = require("./model/Sensor-type");
 const DeviceRepositery_1 = require("./repositery/DeviceRepositery");
 const DeviceService_1 = require("./service/DeviceService");
@@ -59,17 +60,17 @@ app.post('/addSensorType', deviceController.addSensorType);
 // Add DeviceSensor...
 app.get('/addDeviceSensor', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let deviceTypeList = yield Device_type_1.DeviceType.findAll().then().catch(err => console.log(err));
-    let sensorTypeList = yield Sensor_type_1.SensorType.findAll().then().catch(err => console.log(err));
+    let sensorList = yield Sensor_1.Sensor.findAll().then().catch(err => console.log(err));
     // cast Seqlize object to Array for rendering to html....
     let deviceTypes = [];
     deviceTypeList.forEach((data) => {
         deviceTypes.push(data);
     });
-    let sensorTypes = [];
-    sensorTypeList.forEach((data) => {
-        sensorTypes.push(data);
+    let sensors = [];
+    sensorList.forEach((data) => {
+        sensors.push(data);
     });
-    res.render("addDeviceSensor", { deviceTypes, sensorTypes });
+    res.render("addDeviceSensor", { deviceTypes, sensors });
 }));
 app.post('/addDeviceSensor', deviceController.addDeviceSensor);
 // Add-Update Device...
@@ -91,6 +92,16 @@ app.get('/addUpdateDevice/:id?', (req, res) => __awaiter(void 0, void 0, void 0,
     res.render("addDevice", { typeList: array, deviceId, deviceTypeId, deviceName });
 }));
 app.post('/addUpdateDevice', deviceController.addUpdateDevice);
+// Add-Update Device...
+app.get('/addSensor', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let sensorTypeList = yield Sensor_type_1.SensorType.findAll().then().catch(err => console.log(err));
+    let array = [];
+    sensorTypeList.forEach((data) => {
+        array.push(data);
+    });
+    res.render("addSensor", { typeList: array });
+}));
+app.post('/addSensor', deviceController.addSensor);
 //Db query ...  fetch all details...
 // SELECT * FROM `devices` INNER join devicetypes  ON devices.deviceTypeID = devicetypes.deviceTypeID INNER JOIN   devicesensors on devices.deviceTypeID = devicesensors.deviceTypeID inner join sensortypes on devicesensors.sensorTypeID = sensortypes.sensorTypeID
 // where `deviceID` = 1 

@@ -3,6 +3,7 @@ import { DeviceController } from './controller/DeviceController';
 import { sequelize } from "./db";
 import { Device } from './model/Device';
 import { DeviceType } from './model/Device-type';
+import { Sensor } from './model/Sensor';
 import { SensorType } from './model/Sensor-type';
 import { DeviceRepositery } from './repositery/DeviceRepositery';
 import { DeviceService } from "./service/DeviceService";
@@ -53,18 +54,18 @@ app.post('/addSensorType',deviceController.addSensorType);
 // Add DeviceSensor...
 app.get('/addDeviceSensor',async (req,res)=>{
     let deviceTypeList:any  = await DeviceType.findAll().then().catch(err => console.log(err));
-    let sensorTypeList:any = await SensorType.findAll().then().catch(err=>console.log(err));
+    let sensorList:any = await Sensor.findAll().then().catch(err=>console.log(err));
     
     // cast Seqlize object to Array for rendering to html....
     let deviceTypes:any = [];
     deviceTypeList.forEach((data: any) => {      
         deviceTypes.push(data);       
     }); 
-    let sensorTypes:any = [];
-    sensorTypeList.forEach((data: any) => {      
-        sensorTypes.push(data);       
+    let sensors:any = [];
+    sensorList.forEach((data: any) => {      
+        sensors.push(data);       
     });  
-    res.render("addDeviceSensor",{deviceTypes,sensorTypes});
+    res.render("addDeviceSensor",{deviceTypes,sensors});
 });
 app.post('/addDeviceSensor',deviceController.addDeviceSensor);
 // Add-Update Device...
@@ -89,6 +90,17 @@ app.get('/addUpdateDevice/:id?',async (req,res)=>{
     res.render("addDevice",{typeList:array,deviceId,deviceTypeId,deviceName});
 });
 app.post('/addUpdateDevice',deviceController.addUpdateDevice);
+// Add-Update Device...
+app.get('/addSensor',async (req,res)=>{
+    let sensorTypeList:any = await SensorType.findAll().then().catch(err=>console.log(err));        
+    let array:any = [];
+    sensorTypeList.forEach((data: any) => {      
+        array.push(data);       
+    });
+    res.render("addSensor",{typeList:array});
+});
+app.post('/addSensor',deviceController.addSensor);
+
 
 //Db query ...  fetch all details...
 // SELECT * FROM `devices` INNER join devicetypes  ON devices.deviceTypeID = devicetypes.deviceTypeID INNER JOIN   devicesensors on devices.deviceTypeID = devicesensors.deviceTypeID inner join sensortypes on devicesensors.sensorTypeID = sensortypes.sensorTypeID

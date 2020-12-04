@@ -83,7 +83,7 @@ export class DeviceRepositery{
     addDeviceSensor(body:any):Promise<DeviceSensor>{
         return DeviceSensor.create({
                                     deviceTypeID: body.DeviceType,
-                                    sensorTypeID:body.SensorType
+                                    sensorID:body.Sensor
                                     })
     }
     addDevice(body:any):Promise<Device>{
@@ -107,5 +107,11 @@ export class DeviceRepositery{
                     })
                     .catch((err)=> console.log("Errr",err));
                 })  
+    }
+    addSensor(body:any):Promise<Sensor>{
+        return Sensor.create({
+                                name : body.Sensor,
+                                sensorTypeID : body.sensorType
+                            })
     }
 }

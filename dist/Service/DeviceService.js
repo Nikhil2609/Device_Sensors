@@ -108,5 +108,11 @@ class DeviceService {
             return device;
         });
     }
+    addSensor(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let sensor = yield this._deviceRepositery.addSensor(body);
+            return sensor;
+        });
+    }
 }
 exports.DeviceService = DeviceService;

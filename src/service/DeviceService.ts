@@ -96,6 +96,10 @@ export class DeviceService {
         let device = await this._deviceRepositery.updateDevice(body);
         return device;               
     }
+    async addSensor(body:any): Promise<Sensor>{     
+        let sensor = await this._deviceRepositery.addSensor(body);
+        return sensor;               
+    }
     // addSensor(body:any): Promise<Sensor>{
     //     return new Promise((resolve,reject)=>{
     //         console.log("Add Sensor Service",body);

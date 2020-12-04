@@ -62,14 +62,13 @@ export class DeviceController {
             return res.status(201).json({device,message:"Add Device into database"});
         }       
     }  
-
-    // addSensor = async (req:Request,res:Response)=>{        
-    //     let sensor = await this._deviceService.addSensor(req.body);
-    //     if(typeof(sensor) == undefined){
-    //         return res.status(400).send("Something wrong with form data");
-    //     }
-    //     return res.status(200).send("Add Device into database");
-    // }    
+    addSensor = async (req:Request,res:Response)=>{        
+        let sensor = await this._deviceService.addSensor(req.body);
+        if(typeof(sensor) == undefined){
+            return res.status(400).send("Something wrong with form data");
+        }
+        return res.status(200).send("Add Sensor into database");
+    }    
     
     //  async addDeviceType (req:Request,res:Response)  { 
     //     console.log("this",this);                // this is undefine...

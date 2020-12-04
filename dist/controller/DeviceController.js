@@ -15,16 +15,7 @@ class DeviceController {
     constructor(_deviceService) {
         this._deviceService = _deviceService;
         this.getSensors = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            console.log("Get Sensors Body , ", req.body);
             let sensors = yield this._deviceService.getSensors(req);
-            // let rows = sensors.rows; // Data print on table
-            // let totalRow = sensors.count; // Return from table...
-            // let pages = Math.ceil(totalRow/skip); // total pagination number ... for 40 rows 1,2,3,4 on each page 10 rows..        
-            // let current:number = parseInt(req.params.page) || 1;
-            // let searchValue = req.body.searchValue;      // Value for Coloumn
-            // let searchColoumn = req.body.SearchColoumn;  // Coloumn              
-            // let orderBy = req.body.OrderBy; //fetch Order Column...        
-            // let order:any = req.body.order || 'asc';            
             return res.render("sensorList", {
                 rows: sensors.rows,
                 totalRow: sensors.count,
@@ -38,7 +29,6 @@ class DeviceController {
             });
         });
         this.addUpdateDeviceType = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            console.log("Device Type Body", req.body);
             if (req.body.deviceTypeId) {
                 let deviceType = yield this._deviceService.updateDeviceType(req.body);
                 console.log("Updated DeviceType Data", deviceType);
@@ -76,6 +66,13 @@ class DeviceController {
                 console.log("Inserted DeviceData", device);
                 return res.status(201).json({ device, message: "Add Device into database" });
             }
+        });
+        this.addSensor = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            let sensor = yield this._deviceService.addSensor(req.body);
+            if (typeof (sensor) == undefined) {
+                return res.status(400).send("Something wrong with form data");
+            }
+            return res.status(200).send("Add Device into database");
         });
         this._deviceService = _deviceService;
     }
