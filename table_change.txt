@@ -1,3 +1,4 @@
+Pull Code from GitHub Date : 10/12/2020
 testing code : "test": "mocha src/test/deviceRepositery.test.js",
 
 11:10 am : main task manually set data to Sensor and Device_Sensors table 
