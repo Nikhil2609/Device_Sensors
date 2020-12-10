@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    </head>
+<body>
+    <br>
+    <h2 class="text-center"> Device-Sensors List </h2>
+    <br>
+    
+<form action="getSensors" name="SearchForm" method="GET">
+      <div class="conatiner-fluid">
+        <div class="row ml-0 mr-0">
+          <div class="col-md-1"> Search By : </div>
+            <div class="col-md-10">
+              <div class="row">
+                <div class="col-md-2">
+                <div><input type="radio" name="SearchColoumn" value="Device"> Device Name </div>  
+                <div><input type="radio" name="SearchColoumn" value="DeviceType"> DeviceType Name </div>  
+                <div><input type="radio" name="SearchColoumn" value="Sensor"> Sensor Name </div>  
+                <div><input type="radio" name="SearchColoumn" value="SensorType"> SensorType Name </div>  
+                </div>
+                <div class="col-md-3">
+                  <input type="text" class="form-control" name="searchValue" id="searchValue" placeholder="search by Name of Device,DeviceType,Sensor,SensorType ">
+                </div>
+              </div>
+              <div class="row p-2">
+              <div class="col-md-2">
+                Order by Coloum 
+              </div>
+              <div class="col-md-3">
+                <select name="OrderBy" id="OrderBy" class="form-control">
+                  <option>Order By Coloumn</option>
+                  <option value="Device">Device name</option>
+                  <option value="DeviceType">DeviceType name</option>
+                  <option value="Sensor">Sensor name</option>
+                  <option value="SensorType">SensorType name</option>
+                </select>
+                <select name="order" id="order" class="form-control">
+                  <option>Select Ascending or Decending</option>
+                  <option value="asc">Ascending</option>
+                  <option value="desc">Decending</option>                  
+                </select>                                     
+
+                <input type="submit" value="Search" style="margin: 10px;" class="btn btn-primary"> 
+                <input type="reset" value="Reset" style="margin: 10px;" class="btn btn-danger"> 
+              </div>
+              </div>
+            </div>
+        </div>
+      </div>
+</form>
+    
+<div class="container-fluid">
+    <table class="table table-striped table-bordered">
+        <thead>           
+            <tr>
+                <td>Sequence Number </td>
+                <td> Device_ID </td>
+                <td> Device_Name </td>
+                <td> DeviceType_ID </td>
+                <td> DeviceType_Name </td>
+                <td> Device Sensor ID </td>
+                <td> SensorType ID </td>
+                <td> SensorType name </td>
+                <td> Sensor ID </td>
+                <td> Sensor name </td>
+            </tr>
+        </thead>
+        <tbody>
+          <% if(rows.length > 0){%>
+            <% for(var j=0 ; j< rows.length ;j++) {%>
+            <tr>
+                <td> <%= j+1 %> </td>
+                 <td><%= rows[j].deviceID%></td>
+                 <td><%= rows[j].name%></td>
+                 <td><%= rows[j].DeviceType.deviceTypeID%></td>
+                 <td><%= rows[j].DeviceType.name%></td>
+                 <td><%= rows[j].DeviceType.DeviceSensors.deviceSensorId%></td>
+                 <td><%= rows[j].DeviceType.DeviceSensors.Sensor.SensorType.sensorTypeID%></td>
+                 <td><%= rows[j].DeviceType.DeviceSensors.Sensor.SensorType.name%></td>
+                 <td><%= rows[j].DeviceType.DeviceSensors.Sensor.sensorID%></td>
+                 <td><%= rows[j].DeviceType.DeviceSensors.Sensor.name%></td>                 
+            </tr>
+           <% }%>  
+           <% }else{%>         
+            <tr><td  align="center" colspan="10"> No Rows Found </td></tr>
+           <% }%> 
+        </tbody>        
+    </table>
+    Total Rows : <%= TotalRow%> 
+</div>
+
+<div style="margin-left: 15px;"> 
+    <% if (pages > 0) { %>
+      <ul class="pagination">
+          <% if (current == 1) { %>
+            <li class="disabled page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>              
+          <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="/getSensors/1?SearchColoumn=<%=SearchColoumn%>&searchValue=<%=searchValue%>&OrderBy=<%=OrderBy%>&order=<%=order%>" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>               
+          <% } %>
+          
+          <% for (var i = 1; i <= pages; i++) { %>
+              <% if (i == current) { %>
+                <li class="active page-item"><a class="page-link" href="#"><%= i %></a></li>                  
+              <% } else { %>
+                  <li class="page-item"><a class="page-link" href="/getSensors/<%= i %>?SearchColoumn=<%=SearchColoumn%>&searchValue=<%=searchValue%>&OrderBy=<%=OrderBy%>&order=<%=order%>"><%= i %></a></li>                  
+              <% } %>              
+          <% } %>
+          <% if (current == pages) { %>
+            <li class=" disabled page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>              
+          <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="/search/<%= pages %>?SearchColoumn=<%=SearchColoumn%>&searchValue=<%=searchValue%>&OrderBy=<%=OrderBy%>&order=<%=order%>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>              
+          <% } %>          
+      </ul>
+      <% } %> 
+</div>    
+
+
+<script>
+  $(document).ready(function(){  
+    $("#OrderBy option[value='<%= OrderBy%>']").attr("selected","true"); 
+    $("#order option[value='<%= order%>']").attr("selected","true"); 
+    $("input[value='<%=SearchColoumn%>']").attr("checked","true");
+    $("#searchValue").val('<%=searchValue%>'); 
+})
+</script>
+
+</body>    
+</html>

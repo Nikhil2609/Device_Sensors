@@ -1,0 +1,28 @@
+testing code : "test": "mocha src/test/deviceRepositery.test.js",
+
+11:10 am : main task manually set data to Sensor and Device_Sensors table 
+        instead of making Sensor html and then change Device_Sensors html ...
+
+To Add new or Change the Code Test the Code and after Success Add new Code
+11:40 am : Check Controller , Service  and Repositery ....
+            
+            Test Fail only in Repositery 
+            1) Get Sensors() : beacuse be change the Foreign key 
+             SequelizeDatabaseError: Unknown column 'DeviceSensors.sensorTypeID' in 'on clause'
+            Solution : Check table and check Foreign key Exist or may not change...
+
+** alert:true // works (and table data not drop...)
+add new table sensor ...
+    add foregn key of sensorType table in sensor // added 10:45 am
+    add Sensor Id to Device_Sensors table ...
+    
+
+1) When change Foreign key of Table ...
+note : Order of table creating is matter 
+       first create foreign key table and then assign foreign key into another table
+
+       output: new Foreign key get By default null value ...
+
+       Error : if not maintain Order 
+               TypeError: Cannot read property 'getQueryInterface' of undefined on line 45
+
