@@ -10,11 +10,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceRepositery = void 0;
+<<<<<<< HEAD
 const Device_1 = require("../Model/Device");
+=======
+const Device_1 = require("../model/Device");
+const Device_Sensors_1 = require("../model/Device-Sensors");
+const Device_type_1 = require("../model/Device-type");
+const Sensor_1 = require("../model/Sensor");
+const Sensor_type_1 = require("../model/Sensor-type");
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
 class DeviceRepositery {
     constructor() {
         console.log("Device Repositery constructor called", this);
     }
+<<<<<<< HEAD
     getSensors(body) {
         return __awaiter(this, void 0, void 0, function* () {
             // let deviceId = body.deviceid;   
@@ -68,22 +77,73 @@ class DeviceRepositery {
             //console.log("Sensors Data",sensors);
             //console.log("Json data",JSON.stringify(sensors));
             return sensors;
+=======
+    getSensors(req, limit, offset, OrderColoumn, whereColoumn) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
+                Device_1.Device.findAndCountAll({
+                    attributes: ["deviceID", "name"],
+                    order: OrderColoumn,
+                    where: whereColoumn,
+                    limit: limit,
+                    offset: offset,
+                    subQuery: false,
+                    include: [
+                        {
+                            model: Device_type_1.DeviceType, required: true, attributes: ["deviceTypeID", "name"],
+                            include: [
+                                {
+                                    model: Device_Sensors_1.DeviceSensor, required: true, attributes: ["deviceSensorId"],
+                                    include: [{
+                                            model: Sensor_1.Sensor, required: true, attributes: ["sensorID", "name"],
+                                            include: [
+                                                { model: Sensor_type_1.SensorType, required: true, attributes: ["sensorTypeID", "name"] }
+                                            ]
+                                        }]
+                                }
+                            ]
+                        }
+                    ],
+                    raw: true,
+                    nest: true
+                })
+                    .then((value) => {
+                    console.log("Rows", value.rows);
+                    console.log("Rows", value.count);
+                    resolve(value);
+                })
+                    .catch(err => console.log("Error in getSensors ", err));
+            });
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
         });
     }
     addDeviceType(body) {
         return __awaiter(this, void 0, void 0, function* () {
+<<<<<<< HEAD
             return Device_1.DeviceType.create({ name: body.deviceTypeName });
+=======
+            return Device_type_1.DeviceType.create({ name: body.deviceTypeName });
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
         });
     }
     updateDeviceType(body) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
+<<<<<<< HEAD
                 Device_1.DeviceType.update({ name: body.deviceTypeName }, { where: { deviceTypeID: body.deviceTypeId } })
                     .then((data) => __awaiter(this, void 0, void 0, function* () {
                     // Delete All previous Sensor When we update deviceType..
                     let deleteSensor = yield Device_1.DeviceSensor.destroy({ where: { deviceTypeID: body.deviceTypeId } });
                     console.log("Delete Old Sensor in Device_Sensor Table ", deleteSensor);
                     let response = Device_1.DeviceType.findOne({ where: { deviceTypeID: body.deviceTypeId } });
+=======
+                Device_type_1.DeviceType.update({ name: body.deviceTypeName }, { where: { deviceTypeID: body.deviceTypeId } })
+                    .then((data) => __awaiter(this, void 0, void 0, function* () {
+                    // Delete All previous Sensor When we update deviceType..
+                    let deleteSensor = yield Device_Sensors_1.DeviceSensor.destroy({ where: { deviceTypeID: body.deviceTypeId } });
+                    console.log("Delete Old Sensor in Device_Sensor Table ", deleteSensor);
+                    let response = Device_type_1.DeviceType.findOne({ where: { deviceTypeID: body.deviceTypeId } });
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
                     resolve(response);
                 }))
                     .catch((err) => console.log("Errr", err));
@@ -92,6 +152,7 @@ class DeviceRepositery {
     }
     addSensorType(body) {
         return __awaiter(this, void 0, void 0, function* () {
+<<<<<<< HEAD
             return Device_1.SensorType.create({ name: body.sensorTypeName });
         });
     }
@@ -99,6 +160,15 @@ class DeviceRepositery {
         return Device_1.DeviceSensor.create({
             deviceTypeID: body.DeviceType,
             sensorTypeID: body.SensorType
+=======
+            return Sensor_type_1.SensorType.create({ name: body.sensorTypeName });
+        });
+    }
+    addDeviceSensor(body) {
+        return Device_Sensors_1.DeviceSensor.create({
+            deviceTypeID: body.DeviceType,
+            sensorID: body.Sensor
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
         });
     }
     addDevice(body) {
@@ -120,5 +190,14 @@ class DeviceRepositery {
                 .catch((err) => console.log("Errr", err));
         });
     }
+<<<<<<< HEAD
+=======
+    addSensor(body) {
+        return Sensor_1.Sensor.create({
+            name: body.Sensor,
+            sensorTypeID: body.sensorType
+        });
+    }
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
 }
 exports.DeviceRepositery = DeviceRepositery;

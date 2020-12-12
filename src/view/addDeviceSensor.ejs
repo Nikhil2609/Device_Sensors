@@ -9,10 +9,15 @@
 
     <%- include('navbar'); %>
     
+<<<<<<< HEAD
     Add Sensor page
 
     <br>
     <h3> Add Device TYPE: </h3>
+=======
+    <br>
+    <h3> Add Device Sensor : </h3>
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
     <div class="container">
 
         <form method="POST" action="/addDeviceSensor">
@@ -22,9 +27,15 @@
                     <option value="<%=type.deviceTypeID%>"><%=type.name%></option>
                 <% }); %>
                 </select>
+<<<<<<< HEAD
             SensorType :<select name = "SensorType">     
             <%  sensorTypes.forEach(function(type){ %>                                
                 <option value="<%=type.sensorTypeID%>"><%=type.name%></option>
+=======
+            SensorType :<select name = "Sensor">     
+            <%  sensors.forEach(function(type){ %>                                
+                <option value="<%=type.sensorID%>"><%=type.name%></option>
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
             <% }); %>
             </select>
             

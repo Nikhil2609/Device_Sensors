@@ -10,12 +10,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceController = void 0;
+<<<<<<< HEAD
 const sequelize_1 = require("sequelize");
 const Device_1 = require("../Model/Device");
+=======
+const constant_1 = require("../constant");
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
 class DeviceController {
     constructor(_deviceService) {
         this._deviceService = _deviceService;
         this.getSensors = (req, res) => __awaiter(this, void 0, void 0, function* () {
+<<<<<<< HEAD
             //let sensors:any[] = await this._deviceService.getSensors(req.body);
             let current = parseInt(req.params.page) || 1;
             let skip = 5;
@@ -118,11 +123,26 @@ class DeviceController {
                 searchValue,
                 OrderBy,
                 order,
+=======
+            let sensors = yield this._deviceService.getSensors(req);
+            return res.render("sensorList", {
+                rows: sensors.rows,
+                totalRow: sensors.count,
+                pages: Math.ceil(sensors.count / constant_1.skip),
+                current: parseInt(req.params.page) || 1,
+                searchValue: req.body.searchValue,
+                searchColoumn: req.body.SearchColoumn,
+                orderBy: req.body.OrderBy,
+                order: req.body.order || 'asc',
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
                 message: "SensorsList Data"
             });
         });
         this.addUpdateDeviceType = (req, res) => __awaiter(this, void 0, void 0, function* () {
+<<<<<<< HEAD
             console.log("Device Type Body", req.body);
+=======
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
             if (req.body.deviceTypeId) {
                 let deviceType = yield this._deviceService.updateDeviceType(req.body);
                 console.log("Updated DeviceType Data", deviceType);
@@ -161,6 +181,16 @@ class DeviceController {
                 return res.status(201).json({ device, message: "Add Device into database" });
             }
         });
+<<<<<<< HEAD
+=======
+        this.addSensor = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            let sensor = yield this._deviceService.addSensor(req.body);
+            if (typeof (sensor) == undefined) {
+                return res.status(400).send("Something wrong with form data");
+            }
+            return res.status(200).send("Add Device into database");
+        });
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
         this._deviceService = _deviceService;
     }
 }

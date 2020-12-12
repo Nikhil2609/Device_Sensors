@@ -1,31 +1,13 @@
-import { Sequelize } from "sequelize";
-
-export const sequelize = new Sequelize("Device-Sensor","root","",{
-    host:"localhost",
-    dialect:"mysql"
-});
-
-//Check Db Connection...
-async function connection() {
-    
-    await sequelize.authenticate()
-    .then( () => console.log("Connection Establised"))
-    .catch( err => console.log("Database Connection Error",err)); 
-} 
-connection();
-<<<<<<< HEAD
-
-  
-=======
-// this file contain only table init() , association , sync 
+// this file contain only table init() , association 
+// and sequlize.sync() in app.ts file(startup)
 
 import { DataTypes } from "sequelize";
-import { Device } from "./model/Device";
-import { DeviceSensor } from "./model/Device-Sensors";
-import { DeviceType } from "./model/Device-type";
-import { Sensor } from "./model/Sensor";
-import { SensorType } from "./model/Sensor-type";
-
+import { sequelize } from "../db"; // Db connection Object ...
+import { Device } from "./Device";
+import { DeviceSensor } from "./Device-Sensors";
+import { DeviceType } from "./Device-type";
+import { Sensor } from "./Sensor";
+import { SensorType } from "./Sensor-type";
 
 // table intlize in database by init() (which coloumn ,dataType,Primary key , Foreign key ,Unique, AutoIncrement)
 DeviceType.init(
@@ -168,8 +150,6 @@ SensorType.hasMany(Sensor,{foreignKey:"sensorTypeID"});
 Sensor.belongsTo(SensorType,{foreignKey:"sensorTypeID"});
 
 // Create Table ....
-// sequelize.sync({alter:true})
-//                     .then(()=> console.log("Table created"))
-//                     .catch(err => console.log("Error : While creating Database table",err))
-
->>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
+sequelize.sync({alter:true})
+                    .then(()=> console.log("Table created"))
+                    .catch(err => console.log("Error : While creating Database table",err))

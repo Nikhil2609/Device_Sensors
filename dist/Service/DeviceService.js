@@ -10,15 +10,74 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceService = void 0;
+<<<<<<< HEAD
+=======
+const Device_Sensors_1 = require("../model/Device-Sensors");
+const Device_type_1 = require("../model/Device-type");
+const Sensor_type_1 = require("../model/Sensor-type");
+const sequelize_1 = require("sequelize");
+const Sensor_1 = require("../model/Sensor");
+const constant_1 = require("../constant");
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
 class DeviceService {
     constructor(_deviceRepositery) {
         this._deviceRepositery = _deviceRepositery;
         this._deviceRepositery = _deviceRepositery;
         console.log("Device service called", this);
     }
+<<<<<<< HEAD
     getSensors(body) {
         return __awaiter(this, void 0, void 0, function* () {
             let sensors = yield this._deviceRepositery.getSensors(body);
+=======
+    getSensors(req) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let current = parseInt(req.params.page) || 1;
+            ;
+            let offset = (current - 1) * constant_1.skip; // skip declare at global leval...
+            let limit = constant_1.skip;
+            let searchValue = req.body.searchValue; // Value for Coloumn
+            let SearchColoumn = req.body.SearchColoumn; // Coloumn       
+            let whereColoumn;
+            let OrderBy = req.body.OrderBy; //fetch Order Column...
+            let OrderColoumn; // used in findAll Order property 
+            let order = req.body.order || 'asc';
+            console.log("Service ", searchValue, SearchColoumn, OrderColoumn, order);
+            // for Where Condition on which Coloumn...
+            if (SearchColoumn == "Device") {
+                whereColoumn = { name: { [sequelize_1.Op.like]: '%' + searchValue + '%' } };
+            }
+            else if (SearchColoumn == "DeviceType") {
+                whereColoumn = { '$DeviceType.name$': { [sequelize_1.Op.like]: '%' + searchValue + '%' } };
+            }
+            else if (SearchColoumn == "Sensor") {
+                whereColoumn = { '$DeviceType.DeviceSensors.Sensor.name$': { [sequelize_1.Op.like]: '%' + searchValue + '%' } };
+            }
+            else if (SearchColoumn == "SensorType") {
+                whereColoumn = { '$DeviceType.DeviceSensors.Sensor.SensorType.name$': { [sequelize_1.Op.like]: '%' + searchValue + '%' } };
+            }
+            else {
+                whereColoumn = { name: { [sequelize_1.Op.like]: '%%' } };
+            }
+            // for Order Coloumn..
+            if (OrderBy == "Device") {
+                OrderColoumn = [['name', order]];
+            }
+            else if (OrderBy == "DeviceType") {
+                OrderColoumn = [[Device_type_1.DeviceType, 'name', order]];
+            }
+            else if (OrderBy == "Sensor") {
+                OrderColoumn = [[Device_type_1.DeviceType, Device_Sensors_1.DeviceSensor, Sensor_1.Sensor, 'name', order]];
+            }
+            else if (OrderBy == "SensorType") {
+                OrderColoumn = [[Device_type_1.DeviceType, Device_Sensors_1.DeviceSensor, Sensor_1.Sensor, Sensor_type_1.SensorType, 'name', order]];
+            }
+            else {
+                OrderColoumn = [['deviceID', order]];
+            }
+            console.log("Search value", searchValue, "Coloumn ", SearchColoumn, "Order By ", OrderBy);
+            let sensors = yield this._deviceRepositery.getSensors(req, limit, offset, OrderColoumn, whereColoumn);
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
             return sensors;
         });
     }
@@ -58,5 +117,14 @@ class DeviceService {
             return device;
         });
     }
+<<<<<<< HEAD
+=======
+    addSensor(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let sensor = yield this._deviceRepositery.addSensor(body);
+            return sensor;
+        });
+    }
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
 }
 exports.DeviceService = DeviceService;

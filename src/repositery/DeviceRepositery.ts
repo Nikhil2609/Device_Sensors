@@ -1,12 +1,22 @@
+<<<<<<< HEAD
 import { HasOne, Model, Sequelize } from "sequelize";
 import { sequelize } from "../db";
 import { Device, DeviceSensor, DeviceType, Sensor, SensorType } from "../Model/Device";
+=======
+import { Order, WhereOptions } from "sequelize/types";
+import { Device } from "../model/Device";
+import { DeviceSensor } from "../model/Device-Sensors";
+import { DeviceType } from "../model/Device-type";
+import { Sensor } from "../model/Sensor";
+import { SensorType } from "../model/Sensor-type";
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
 
 export class DeviceRepositery{
 
     constructor(){
         console.log("Device Repositery constructor called",this);
     }
+<<<<<<< HEAD
 
     async getSensors(body:any):Promise<Device[]>{
         // let deviceId = body.deviceid;   
@@ -68,6 +78,59 @@ export class DeviceRepositery{
         //console.log("Json data",JSON.stringify(sensors));
         return sensors;
     }
+=======
+    
+    async getSensors(req:any,
+        limit:number,
+        offset: number,
+        OrderColoumn:Order,
+        whereColoumn:WhereOptions<any>): Promise<{
+                                                   rows: Device[];
+                                                   count: number;
+                                               }>
+        { 
+            return new Promise((resolve,reject)=>{
+                Device.findAndCountAll(
+                        {                                                                                                    
+                            attributes:["deviceID","name"],                                                
+                            order:OrderColoumn,
+                            where : whereColoumn,
+                            limit:limit,
+                            offset:offset,
+                            subQuery:false ,                                                                                                
+                            include:
+                                    [                                                        
+                                    {
+                                    model:DeviceType,required:true ,attributes:["deviceTypeID","name"],                                                                                                   
+                                    include:[
+                                        {
+                                            model:DeviceSensor,required:true,attributes:["deviceSensorId"],
+                                            include:[{
+                                                model:Sensor ,required:true,attributes:["sensorID","name"],
+                                                include:[
+                                                    {model:SensorType,required:true,attributes:["sensorTypeID","name"]}]
+                                            }]
+                                        }
+                                    ]
+                                    }
+                                ],                                                                                                                                                                                                                                                               
+                            raw:true,
+                            nest:true                                                                                        
+                        })  
+                      .then((value: {
+                                rows: Device[];
+                                count: number;}) =>
+                             {
+                                 console.log("Rows",value.rows);
+                                 console.log("Rows",value.count);
+                                 resolve(value);
+                             }
+                            )
+                      .catch(err => console.log("Error in getSensors ",err));
+            });
+        }         
+    
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
     async addDeviceType(body:any):Promise<DeviceType>{
         return DeviceType.create({ name : body.deviceTypeName });
     }
@@ -90,7 +153,11 @@ export class DeviceRepositery{
     addDeviceSensor(body:any):Promise<DeviceSensor>{
         return DeviceSensor.create({
                                     deviceTypeID: body.DeviceType,
+<<<<<<< HEAD
                                     sensorTypeID:body.SensorType
+=======
+                                    sensorID:body.Sensor
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
                                     })
     }
     addDevice(body:any):Promise<Device>{
@@ -115,4 +182,13 @@ export class DeviceRepositery{
                     .catch((err)=> console.log("Errr",err));
                 })  
     }
+<<<<<<< HEAD
+=======
+    addSensor(body:any):Promise<Sensor>{
+        return Sensor.create({
+                                name : body.Sensor,
+                                sensorTypeID : body.sensorType
+                            })
+    }
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
 }

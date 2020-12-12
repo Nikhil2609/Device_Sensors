@@ -1,14 +1,20 @@
 import { Request,Response } from "express";
+<<<<<<< HEAD
 import { Op, Order } from "sequelize";
 import { json } from "sequelize";
 import { any, like } from "sequelize/types/lib/operators";
 import { Fn, Json } from "sequelize/types/lib/utils";
 import { Device, DeviceSensor, DeviceType, Sensor, SensorType } from "../model/Device";
 import { DeviceService } from "../service/DeviceService";
+=======
+import { DeviceService } from "../service/DeviceService";
+import { skip } from "../constant";
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
 
 export class DeviceController {
 
     public constructor(private readonly _deviceService:DeviceService){        
+<<<<<<< HEAD
         this._deviceService =  _deviceService;             
     }   
     
@@ -136,6 +142,27 @@ export class DeviceController {
     
     addUpdateDeviceType = async (req:Request,res:Response) => {  
         console.log("Device Type Body",req.body); 
+=======
+        this._deviceService =  _deviceService;                     
+    }   
+    
+    getSensors = async (req:Request,res:Response)=>{         
+        let sensors = await this._deviceService.getSensors(req);            
+        return res.render("sensorList",{
+                                        rows:sensors.rows,                      // Data print on table
+                                        totalRow:sensors.count,                 // total Rows before Pagination            
+                                        pages:Math.ceil(sensors.count/skip),    // total pagination number ... for 40 rows 1,2,3,4 on each page 10 rows..        
+                                        current:parseInt(req.params.page) || 1,
+                                        searchValue:req.body.searchValue,       // Value for Coloumn
+                                        searchColoumn:req.body.SearchColoumn, 
+                                        orderBy:req.body.OrderBy,               //fetch Order Column...
+                                        order:req.body.order || 'asc',
+                                        message:"SensorsList Data"
+                                       }
+                        ); 
+    }    
+    addUpdateDeviceType = async (req:Request,res:Response) => {          
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
         if(req.body.deviceTypeId){
             let deviceType = await this._deviceService.updateDeviceType(req.body);
             console.log("Updated DeviceType Data",deviceType);
@@ -174,6 +201,7 @@ export class DeviceController {
             return res.status(201).json({device,message:"Add Device into database"});
         }       
     }  
+<<<<<<< HEAD
 
     // addSensor = async (req:Request,res:Response)=>{        
     //     let sensor = await this._deviceService.addSensor(req.body);
@@ -182,6 +210,15 @@ export class DeviceController {
     //     }
     //     return res.status(200).send("Add Device into database");
     // }    
+=======
+    addSensor = async (req:Request,res:Response)=>{        
+        let sensor = await this._deviceService.addSensor(req.body);
+        if(typeof(sensor) == undefined){
+            return res.status(400).send("Something wrong with form data");
+        }
+        return res.status(200).send("Add Sensor into database");
+    }    
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
     
     //  async addDeviceType (req:Request,res:Response)  { 
     //     console.log("this",this);                // this is undefine...

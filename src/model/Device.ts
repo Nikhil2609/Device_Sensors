@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { DataTypes, Model, Sequelize } from "sequelize";
 import { sequelize } from "../db"; 
 
@@ -11,10 +12,15 @@ export class SensorType extends Model{
     name!: string;
     isActive!: boolean;
 }
+=======
+import { Model } from "sequelize";
+
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
 export class Device extends Model{
     deviceID! : number;
     deviceTypeID! : number;
     name!: string;
+<<<<<<< HEAD
     active! :boolean;  
     public DeviceType:DeviceType;  
 }
@@ -159,3 +165,10 @@ DeviceSensor.init(
 sequelize.sync({alter:true})
          .then(()=> console.log("Table created"))
          .catch(err => console.log("Error : While creating Database table",err))
+=======
+    active! :boolean;      
+}
+
+
+
+>>>>>>> 172153ef3cfb74c365d2ffa39af118ad7fff9d81
